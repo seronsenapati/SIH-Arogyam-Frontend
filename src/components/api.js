@@ -15,10 +15,6 @@ export const apiClient = {
       body: JSON.stringify(data),
     };
     
-    // Add credentials for CORS requests if needed
-    // Only uncomment this if your backend expects cookies/auth tokens
-    // options.credentials = 'include';
-    
     try {
       const response = await fetch(url, options);
       
@@ -29,6 +25,8 @@ export const apiClient = {
       return await response.json();
     } catch (error) {
       console.error('API request failed:', error);
+      
+      // Re-throw the error so it can be handled by the calling function
       throw error;
     }
   },
@@ -43,10 +41,6 @@ export const apiClient = {
       },
     };
     
-    // Add credentials for CORS requests if needed
-    // Only uncomment this if your backend expects cookies/auth tokens
-    // options.credentials = 'include';
-    
     try {
       const response = await fetch(url, options);
       
@@ -57,6 +51,8 @@ export const apiClient = {
       return await response.json();
     } catch (error) {
       console.error('API request failed:', error);
+      
+      // Re-throw the error so it can be handled by the calling function
       throw error;
     }
   }
