@@ -119,7 +119,13 @@ export function PatientAuthPage({ onBack, onLogin }) {
       }
     } catch (err) {
       console.error('Authentication error:', err);
-      if (err.response && err.response.data && err.response.data.error) {
+      
+      // Handle CORS and network errors specifically
+      if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+        setError('Network error: Unable to connect to the server. Please try again later.');
+      } else if (err.message && err.message.includes('CORS')) {
+        setError('Connection error: Please contact support.');
+      } else if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error.message || 'Authentication failed');
       } else {
         setError('An error occurred. Please try again.');

@@ -53,7 +53,13 @@ export function LoginPage({ onBack, onLogin }) {
       }
     } catch (err) {
       console.error('Login error:', err);
-      if (err.response && err.response.data && err.response.data.error) {
+      
+      // Handle CORS and network errors specifically
+      if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+        setError('Network error: Unable to connect to the server. Please try again later.');
+      } else if (err.message && err.message.includes('CORS')) {
+        setError('Connection error: Please contact support.');
+      } else if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error.message || 'Login failed');
       } else {
         setError('An error occurred during login. Please try again.');
