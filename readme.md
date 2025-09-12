@@ -1,16 +1,16 @@
-# Ayurveda Website Design - JavaScript Version
+# Arogyam - Ayurveda Healthcare Platform
 
-This is the complete JavaScript/JSX conversion of the original TypeScript/TSX frontend for the Ayurveda Website Design.
+A comprehensive healthcare platform built with modern web technologies, providing Ayurvedic consultation services, patient management, and doctor scheduling.
 
 ## Features
 
-- Complete conversion from TypeScript/TSX to JavaScript/JSX
-- All original functionality preserved
-- Connection to backend at https://sih-arogyam-backend.onrender.com
-- Google signup removed as requested
-- Login and registration fixed and optimized for the backend
+- Patient registration and authentication
+- Doctor and consultant dashboards
+- Dosha consultation and diagnosis
+- Appointment scheduling system
+- Patient recovery tracking
 - Responsive design with Tailwind CSS
-- All 24 components converted
+- Component-based architecture with React
 
 ## Technologies Used
 
@@ -20,6 +20,7 @@ This is the complete JavaScript/JSX conversion of the original TypeScript/TSX fr
 - Radix UI Components
 - Lucide React Icons
 - Vite (Build tool)
+- React Router DOM
 
 ## Getting Started
 
@@ -31,9 +32,9 @@ This is the complete JavaScript/JSX conversion of the original TypeScript/TSX fr
 ### Installation
 
 1. Clone the repository
-2. Navigate to the frontend directory:
+2. Navigate to the project directory:
    ```bash
-   cd frontend-js-complete
+   cd SIH-Arogyam-Frontend
    ```
 3. Install dependencies:
    ```bash
@@ -68,11 +69,10 @@ npm run preview
 ## Project Structure
 
 ```
-frontend-js-complete/
-├── public/              # Static assets
-├── src/                 # Source code
-│   ├── components/      # React components
-│   │   ├── ui/          # Radix UI components
+SIH-Arogyam-Frontend/
+├── src/                 
+│   ├── components/      
+│   │   ├── ui/          # Reusable UI components
 │   ├── App.jsx          # Main App component
 │   ├── main.jsx         # Entry point
 │   └── index.css        # Global styles
@@ -83,25 +83,40 @@ frontend-js-complete/
 └── package.json         # Project dependencies and scripts
 ```
 
-## Key Components Converted
+## Key Components
 
-1. App.jsx (main application component)
-2. Navigation.jsx
-3. PatientNavigation.jsx
-4. HomePage.jsx
-5. RegistrationPage.jsx
-6. PatientAuthPage.jsx
-7. And 18 other components...
+### Authentication & Registration
+- LoginPage.jsx
+- SignupPage.jsx
+- RegistrationPage.jsx
+- PatientAuthPage.jsx
+- DoctorAuthPage.jsx
+- ConsultantAuthPage.jsx
+
+### Dashboards
+- PatientDashboard.jsx
+- DoctorDashboard.jsx
+- ConsultantDashboard.jsx
+
+### User Management
+- PatientAccount.jsx
+- DoctorAccount.jsx
+
+### Healthcare Features
+- ConsultDoshaPage.jsx
+- DiagnosisPage.jsx
+- AppointmentScheduler.jsx
+- PatientRecoveryGraph.jsx
+
+### General Pages
+- HomePage.jsx
+- AboutUsPage.jsx
+- BlogPage.jsx
+- ContactUsPage.jsx
 
 ## Backend Integration
 
 The frontend is configured to connect to the backend at https://sih-arogyam-backend.onrender.com with proper proxy settings in vite.config.js.
-
-## Authentication
-
-- Google signup has been removed as requested
-- Login and registration forms are properly connected to the backend API
-- User state is managed with React hooks and localStorage
 
 ## Deployment
 
