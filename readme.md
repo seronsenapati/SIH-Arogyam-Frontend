@@ -120,7 +120,33 @@ The frontend is configured to connect to the backend at https://sih-arogyam-back
 
 ## Deployment
 
-The frontend can be deployed to any static hosting service. The build process creates optimized assets in the `dist` directory.
+### Vercel Deployment
+
+1. Create a new project on Vercel
+2. Connect your GitHub repository
+3. Configure the build settings:
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+   - Install Command: `npm install`
+4. Add the following redirects to fix client-side routing issues:
+
+The vercel.json file has been added to the project root to handle client-side routing:
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+This configuration ensures that all routes are redirected to index.html, allowing React Router to handle the routing properly.
+
+### Other Static Hosting
+
+For other static hosting providers, make sure to set up similar redirect rules to forward all requests to index.html.
 
 ## Contributing
 
