@@ -1,81 +1,120 @@
-# Arogyam Frontend
+# Ayurveda Website Design - JavaScript Version
 
-This is the frontend for the Arogyam Ayurvedic Telehealth Platform, built with React.js and styled-components.
+This is the complete JavaScript/JSX conversion of the original TypeScript/TSX frontend for the Ayurveda Website Design.
 
 ## Features
 
-- **Glassmorphism Design**: Modern UI with glass-like transparency effects
-- **Responsive Layout**: Works on all device sizes
-- **Ayurvedic Theme**: Custom styling reflecting Ayurvedic principles
-- **Multi-page Application**: Complete routing for all sections
-- **Interactive Components**: Dynamic forms and user interfaces
-
-## Project Structure
-
-```
-src/
-├── assets/           # Images and SVG files
-├── components/       # Reusable UI components
-├── pages/            # Page components
-└── App.js           # Main application component
-```
-
-## Pages
-
-1. **Home** - Main landing page with hero section and features
-2. **About** - Information about Arogyam and Ayurveda
-3. **Services** - List of Ayurvedic services offered
-4. **Herbs** - Information about Ayurvedic herbs and remedies
-5. **Blog** - Health and wellness articles
-6. **Contact** - Contact form and information
-7. **Login/Register** - User authentication
-8. **Dashboard** - User dashboard with appointments
-9. **Appointment Booking** - Multi-step booking process
-
-## Design Elements
-
-- **Glassmorphism Effects**: Using CSS backdrop-filter for frosted glass appearance
-- **Rounded Buttons**: Consistent button styling with hover effects
-- **Ayurvedic Color Palette**: Green tones representing nature and wellness
-- **Typography**: Playfair Display for headings, clean sans-serif for body text
-
-## Installation
-
-```bash
-cd Frontend
-npm install
-```
-
-## Environment Setup
-
-1. Copy the `.env.example` file to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-2. Edit the `.env` file and fill in your values
-
-## Running the Application
-
-```bash
-cd Frontend
-npm start
-```
-
-The application will be available at http://localhost:3000
-
-## Building for Production
-
-```bash
-cd Frontend
-npm run build
-```
-
-This will create a `build/` directory with the production-ready files.
+- Complete conversion from TypeScript/TSX to JavaScript/JSX
+- All original functionality preserved
+- Connection to backend at https://sih-arogyam-backend.onrender.com
+- Google signup removed as requested
+- Login and registration fixed and optimized for the backend
+- Responsive design with Tailwind CSS
+- All 24 components converted
 
 ## Technologies Used
 
 - React.js
-- React Router
-- Styled Components
-- CSS3 (Glassmorphism effects)
-- JavaScript ES6+
+- JavaScript (ES6+)
+- Tailwind CSS
+- Radix UI Components
+- Lucide React Icons
+- Vite (Build tool)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+2. Navigate to the frontend directory:
+   ```bash
+   cd frontend-js-complete
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Development
+
+To start the development server:
+```bash
+npm run dev
+```
+
+The application will be available at http://localhost:3000
+
+### Building for Production
+
+To create a production build:
+```bash
+npm run build
+```
+
+The build files will be output to the `dist` directory.
+
+### Previewing Production Build
+
+To preview the production build locally:
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+frontend-js-complete/
+├── public/              # Static assets
+├── src/                 # Source code
+│   ├── components/      # React components
+│   │   ├── ui/          # Radix UI components
+│   ├── App.jsx          # Main App component
+│   ├── main.jsx         # Entry point
+│   └── index.css        # Global styles
+├── index.html           # HTML template
+├── vite.config.js       # Vite configuration
+├── tailwind.config.js   # Tailwind CSS configuration
+├── postcss.config.js    # PostCSS configuration
+└── package.json         # Project dependencies and scripts
+```
+
+## Key Components Converted
+
+1. App.jsx (main application component)
+2. Navigation.jsx
+3. PatientNavigation.jsx
+4. HomePage.jsx
+5. RegistrationPage.jsx
+6. PatientAuthPage.jsx
+7. And 18 other components...
+
+## Backend Integration
+
+The frontend is configured to connect to the backend at https://sih-arogyam-backend.onrender.com with proper proxy settings in vite.config.js.
+
+## Authentication
+
+- Google signup has been removed as requested
+- Login and registration forms are properly connected to the backend API
+- User state is managed with React hooks and localStorage
+
+## Deployment
+
+The frontend can be deployed to any static hosting service. The build process creates optimized assets in the `dist` directory.
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a pull request
+
+## License
+
+This project is licensed under the MIT License.
