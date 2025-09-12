@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Separator } from './ui/separator';
-import axios from 'axios';
+import apiClient from './api';
 
 export function SignupPage({ onBack, onRegister }) {
   const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ export function SignupPage({ onBack, onRegister }) {
 
     try {
       // Make API call to backend for registration
-      const response = await axios.post('/api/auth/register', {
+      const response = await apiClient.post('/api/auth/register', {
         email: formData.email,
         password: formData.password,
         role: 'patient',
@@ -65,27 +65,27 @@ export function SignupPage({ onBack, onRegister }) {
         }
       });
 
-      if (response.data.ok) {
+      if (response.ok) {
         setSuccess(true);
         // After successful registration, automatically log in the user
-        const loginResponse = await axios.post('/api/auth/login', {
+        const loginResponse = await apiClient.post('/api/auth/login', {
           username: formData.email,
           password: formData.password
         });
 
-        if (loginResponse.data.ok) {
+        if (loginResponse.ok) {
           const userData = {
-            id: loginResponse.data.data.user.id,
-            email: loginResponse.data.data.user.email,
-            role: loginResponse.data.data.user.role,
-            token: loginResponse.data.data.accessToken
+            id: loginResponse.data.user.id,
+            email: loginResponse.data.user.email,
+            role: loginResponse.data.user.role,
+            token: loginResponse.data.accessToken
           };
           
           // Call the onRegister callback with user data
           onRegister(userData.role, userData);
         }
       } else {
-        setError(response.data.error?.message || 'Registration failed');
+        setError(response.error?.message || 'Registration failed');
       }
     } catch (err) {
       console.error('Registration error:', err);

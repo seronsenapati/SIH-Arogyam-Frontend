@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import axios from 'axios';
+import apiClient from './api';
 
 export function LoginPage({ onBack, onLogin }) {
   const [formData, setFormData] = useState({
@@ -32,24 +32,24 @@ export function LoginPage({ onBack, onLogin }) {
 
     try {
       // Make API call to backend
-      const response = await axios.post('/api/auth/login', {
+      const response = await apiClient.post('/api/auth/login', {
         username: formData.email,
         password: formData.password
       });
 
-      if (response.data.ok) {
+      if (response.ok) {
         // Extract user data from response
         const userData = {
-          id: response.data.data.user.id,
-          email: response.data.data.user.email,
-          role: response.data.data.user.role,
-          token: response.data.data.accessToken
+          id: response.data.user.id,
+          email: response.data.user.email,
+          role: response.data.user.role,
+          token: response.data.accessToken
         };
         
         // Call the onLogin callback with user data
         onLogin(userData.role, userData);
       } else {
-        setError(response.data.error?.message || 'Login failed');
+        setError(response.error?.message || 'Login failed');
       }
     } catch (err) {
       console.error('Login error:', err);
