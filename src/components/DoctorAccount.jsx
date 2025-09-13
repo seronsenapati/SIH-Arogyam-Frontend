@@ -28,7 +28,8 @@ export function DoctorAccount({ onBack, onLogout, userProfile, onBackToHome }) {
         experience: 'N/A',
         phone: 'N/A',
         qualification: 'N/A',
-        registrationNumber: 'N/A',
+        stateCouncilNumber: 'N/A',
+        nationalRegistrationNumber: 'N/A',
         clinicAddress: 'N/A',
         languages: ['English'],
         consultationFee: 'N/A',
@@ -49,7 +50,8 @@ export function DoctorAccount({ onBack, onLogout, userProfile, onBackToHome }) {
       experience: userProfile.experience || 'N/A',
       phone: userProfile.phone || '+91 98765 43210',
       qualification: userProfile.qualification || 'N/A',
-      registrationNumber: userProfile.registrationNumber || 'N/A',
+      stateCouncilNumber: userProfile.stateCouncilNumber || 'N/A',
+      nationalRegistrationNumber: userProfile.nationalRegistrationNumber || 'N/A',
       clinicAddress: userProfile.clinicAddress || 'N/A',
       languages: userProfile.languages || ['English'],
       consultationFee: userProfile.consultationFee || 'N/A',
@@ -128,8 +130,8 @@ export function DoctorAccount({ onBack, onLogout, userProfile, onBackToHome }) {
                   <p className="text-lg text-gray-900">{doctorData.qualification}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Registration Number</label>
-                  <p className="text-lg text-gray-900">{doctorData.registrationNumber}</p>
+                  <label className="text-sm font-medium text-gray-700">State Council Number</label>
+                  <p className="text-lg text-gray-900">{doctorData.stateCouncilNumber}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-700">Specialization</label>
@@ -146,12 +148,8 @@ export function DoctorAccount({ onBack, onLogout, userProfile, onBackToHome }) {
                   <p className="text-lg text-gray-900">{doctorData.consultationFee}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Languages</label>
-                  <div className="flex gap-2 mt-1">
-                    {doctorData.languages.map((lang, index) => (
-                      <Badge key={index} variant="outline">{lang}</Badge>
-                    ))}
-                  </div>
+                  <label className="text-sm font-medium text-gray-700">National Registration Number</label>
+                  <p className="text-lg text-gray-900">{doctorData.nationalRegistrationNumber}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-700">Total Patients Treated</label>

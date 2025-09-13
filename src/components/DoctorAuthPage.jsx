@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Mail, Lock, Key, Chrome, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Mail, Lock, Key, Chrome, Eye, EyeOff, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -15,7 +15,9 @@ export function DoctorAuthPage({ onBack, onLogin }) {
     fullName: '',
     specialization: '',
     experience: '',
-    doctorKey: ''
+    doctorKey: '',
+    stateCouncilNumber: '',
+    nationalRegistrationNumber: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -64,13 +66,24 @@ export function DoctorAuthPage({ onBack, onLogin }) {
           throw new Error('Passwords do not match');
         }
         
+        // Validate required fields for doctor registration
+        if (!formData.stateCouncilNumber) {
+          throw new Error('State Council Number is required');
+        }
+        
+        if (!formData.nationalRegistrationNumber) {
+          throw new Error('National Registration Number is required');
+        }
+        
         const registerData = {
           name: formData.fullName,
           email: formData.email,
           password: formData.password,
           specialization: formData.specialization,
           experience: parseInt(formData.experience),
-          doctorKey: formData.doctorKey
+          doctorKey: formData.doctorKey,
+          stateCouncilNumber: formData.stateCouncilNumber,
+          nationalRegistrationNumber: formData.nationalRegistrationNumber
         };
         
         const response = await apiClient.post('/api/auth/register', registerData);
@@ -273,6 +286,47 @@ export function DoctorAuthPage({ onBack, onLogin }) {
                       placeholder="e.g., 5"
                       required
                     />
+                  </div>
+
+                  {/* New Doctor Registration Fields */}
+                  <div className="space-y-2">
+                    <Label htmlFor="stateCouncilNumber">State Council Number *</Label>
+                    <div className="relative">
+                      <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input 
+                        id="stateCouncilNumber" 
+                        name="stateCouncilNumber"
+                        type="text" 
+                        value={formData.stateCouncilNumber}
+                        onChange={handleInputChange}
+                        placeholder="Enter your State Council Number"
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Please enter your State Medical Council registration number
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="nationalRegistrationNumber">National Registration Number *</Label>
+                    <div className="relative">
+                      <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input 
+                        id="nationalRegistrationNumber" 
+                        name="nationalRegistrationNumber"
+                        type="text" 
+                        value={formData.nationalRegistrationNumber}
+                        onChange={handleInputChange}
+                        placeholder="Enter your National Registration Number"
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Please enter your National Medical Commission registration number
+                    </p>
                   </div>
 
                   <div className="space-y-2">

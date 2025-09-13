@@ -13,7 +13,8 @@ export function SimpleRegistrationPage({ onBack, onRegister }) {
     password: '',
     confirmPassword: '',
     role: 'patient', // default to patient
-    doctorLicense: ''
+    stateCouncilNumber: '',
+    nationalRegistrationNumber: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -43,10 +44,17 @@ export function SimpleRegistrationPage({ onBack, onRegister }) {
       return;
     }
 
-    // If role is doctor, license is required
-    if (formData.role === 'doctor' && !formData.doctorLicense) {
-      setError('Doctor license is required for doctor registration');
-      return;
+    // If role is doctor, both new fields are required
+    if (formData.role === 'doctor') {
+      if (!formData.stateCouncilNumber) {
+        setError('State Council Number is required for doctor registration');
+        return;
+      }
+      
+      if (!formData.nationalRegistrationNumber) {
+        setError('National Registration Number is required for doctor registration');
+        return;
+      }
     }
 
     setLoading(true);
@@ -64,7 +72,8 @@ export function SimpleRegistrationPage({ onBack, onRegister }) {
         email: formData.email,
         password: formData.password,
         role: formData.role,
-        doctorLicense: formData.role === 'doctor' ? formData.doctorLicense : undefined,
+        stateCouncilNumber: formData.role === 'doctor' ? formData.stateCouncilNumber : undefined,
+        nationalRegistrationNumber: formData.role === 'doctor' ? formData.nationalRegistrationNumber : undefined,
         profile: profile
       });
 
@@ -219,21 +228,45 @@ export function SimpleRegistrationPage({ onBack, onRegister }) {
               </div>
 
               {formData.role === 'doctor' && (
-                <div className="space-y-2">
-                  <Label htmlFor="doctorLicense">Doctor License *</Label>
-                  <div className="relative">
-                    <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input 
-                      id="doctorLicense" 
-                      type="text" 
-                      placeholder="Enter your medical license number"
-                      className="pl-10"
-                      value={formData.doctorLicense}
-                      onChange={(e) => handleInputChange('doctorLicense', e.target.value)}
-                      onKeyPress={handleKeyPress}
-                    />
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="stateCouncilNumber">State Council Number *</Label>
+                    <div className="relative">
+                      <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input 
+                        id="stateCouncilNumber" 
+                        type="text" 
+                        placeholder="Enter your State Council Number"
+                        className="pl-10"
+                        value={formData.stateCouncilNumber}
+                        onChange={(e) => handleInputChange('stateCouncilNumber', e.target.value)}
+                        onKeyPress={handleKeyPress}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Please enter your State Medical Council registration number
+                    </p>
                   </div>
-                </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="nationalRegistrationNumber">National Registration Number *</Label>
+                    <div className="relative">
+                      <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input 
+                        id="nationalRegistrationNumber" 
+                        type="text" 
+                        placeholder="Enter your National Registration Number"
+                        className="pl-10"
+                        value={formData.nationalRegistrationNumber}
+                        onChange={(e) => handleInputChange('nationalRegistrationNumber', e.target.value)}
+                        onKeyPress={handleKeyPress}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Please enter your National Medical Commission registration number
+                    </p>
+                  </div>
+                </>
               )}
 
               <div className="space-y-2">
