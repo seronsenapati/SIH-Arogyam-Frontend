@@ -18,7 +18,7 @@ export function PatientDashboard({
   const [consistency] = useState(75); // Example consistency percentage
   const [recovery] = useState(80); // Example recovery percentage
 
-  // Safely extract user name, with fallbacks
+  // Safely extract user name with improved personalization
   const getUserName = () => {
     if (!userProfile) return 'Patient';
     
@@ -27,11 +27,12 @@ export function PatientDashboard({
       return userProfile.name.split(' ')[0];
     }
     
-    // Check if userProfile has firstName or email
+    // Check if userProfile has firstName
     if (userProfile.firstName) {
       return userProfile.firstName;
     }
     
+    // Fallback to email-based name
     if (userProfile.email) {
       return userProfile.email.split('@')[0];
     }
@@ -39,7 +40,7 @@ export function PatientDashboard({
     return 'Patient';
   };
 
-  // Safely extract full name
+  // Safely extract full name with improved personalization
   const getUserFullName = () => {
     if (!userProfile) return 'Patient';
     

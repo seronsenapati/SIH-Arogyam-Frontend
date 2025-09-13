@@ -150,20 +150,32 @@ export function DoctorDashboard({ userProfile, onBackToHome, onLogout }) {
     alert(`Therapy survey initiated for ${patient.name}\nSurvey link sent to patient's registered email.`);
   };
 
-  // Safely extract user data with fallbacks
+  // Safely extract user data with fallbacks and improved personalization
   const getUserName = () => {
     if (!userProfile) return 'Doctor';
     
+    // Check for name field first
     if (userProfile.name) {
-      return userProfile.name;
+      // If name contains "Dr." already, return as is
+      if (userProfile.name.toLowerCase().includes('dr')) {
+        return userProfile.name;
+      }
+      // Otherwise add "Dr." prefix
+      return `Dr. ${userProfile.name}`;
     }
     
+    // Check for firstName/lastName combination
     if (userProfile.firstName || userProfile.lastName) {
-      return `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
+      const fullName = `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
+      if (fullName) {
+        return `Dr. ${fullName}`;
+      }
     }
     
+    // Fallback to email-based name
     if (userProfile.email) {
-      return userProfile.email.split('@')[0];
+      const emailName = userProfile.email.split('@')[0];
+      return `Dr. ${emailName}`;
     }
     
     return 'Doctor';
@@ -183,6 +195,15 @@ export function DoctorDashboard({ userProfile, onBackToHome, onLogout }) {
     if (!userProfile) return '5+ Years';
     
     if (userProfile.experience) {
+      // If experience is already formatted as "X years", return as is
+      if (typeof userProfile.experience === 'string' && userProfile.experience.includes('year')) {
+        return userProfile.experience;
+      }
+      // If it's a number, format it properly
+      if (typeof userProfile.experience === 'number' || !isNaN(userProfile.experience)) {
+        const years = parseInt(userProfile.experience);
+        return `${years}+ Years`;
+      }
       return userProfile.experience;
     }
     
@@ -194,6 +215,10 @@ export function DoctorDashboard({ userProfile, onBackToHome, onLogout }) {
     
     if (userProfile.doctorId) {
       return userProfile.doctorId;
+    }
+    
+    if (userProfile.id) {
+      return `DR-${userProfile.id}`;
     }
     
     return 'DOC-001';

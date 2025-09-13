@@ -94,7 +94,12 @@ export function ConsultantDashboard({ userProfile, onBackToHome, onLogout }) {
     }
     
     // Show confirmation popup
-    alert(`Consultation booked successfully!\n\nPatient: ${patient.name}\nDoctor: ${doctor.name}\nDate: Tomorrow\nTime: 10:00 AM - 11:00 AM`);
+    alert(`Consultation booked successfully!
+
+Patient: ${patient.name}
+Doctor: ${doctor.name}
+Date: Tomorrow
+Time: 10:00 AM - 11:00 AM`);
     
     setSelectedPatient(null);
     setAssignDocCode('');
@@ -123,6 +128,61 @@ export function ConsultantDashboard({ userProfile, onBackToHome, onLogout }) {
     );
   }
 
+  // Safely extract user data with fallbacks and improved personalization
+  const getUserName = () => {
+    if (!userProfile) return 'Consultant';
+    
+    // Check for name field first
+    if (userProfile.name) {
+      // If name contains "Dr." already, return as is
+      if (userProfile.name.toLowerCase().includes('dr')) {
+        return userProfile.name;
+      }
+      // Otherwise add "Dr." prefix
+      return `Dr. ${userProfile.name}`;
+    }
+    
+    // Check for firstName/lastName combination
+    if (userProfile.firstName || userProfile.lastName) {
+      const fullName = `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
+      if (fullName) {
+        return `Dr. ${fullName}`;
+      }
+    }
+    
+    // Fallback to email-based name
+    if (userProfile.email) {
+      const emailName = userProfile.email.split('@')[0];
+      return `Dr. ${emailName}`;
+    }
+    
+    return 'Consultant';
+  };
+
+  const getUserSpecialization = () => {
+    if (!userProfile) return 'Ayurvedic Consultation';
+    
+    if (userProfile.specialization) {
+      return userProfile.specialization;
+    }
+    
+    return 'Ayurvedic Consultation';
+  };
+
+  const getUserConsultantId = () => {
+    if (!userProfile) return 'CNS-001';
+    
+    if (userProfile.consultantId) {
+      return userProfile.consultantId;
+    }
+    
+    if (userProfile.id) {
+      return `CNS-${userProfile.id}`;
+    }
+    
+    return 'CNS-001';
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-orange-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6 pt-12">
@@ -130,8 +190,8 @@ export function ConsultantDashboard({ userProfile, onBackToHome, onLogout }) {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl text-green-800 mb-2">Consultant Dashboard</h1>
-            <p className="text-gray-600">Welcome back, {userProfile.name}</p>
-            <p className="text-sm text-gray-500">ID: {userProfile.consultantId} | {userProfile.specialization}</p>
+            <p className="text-gray-600">Welcome back, {getUserName()}</p>
+            <p className="text-sm text-gray-500">ID: {getUserConsultantId()} | {getUserSpecialization()}</p>
           </div>
           <div className="flex gap-2">
             <Button onClick={() => setShowGrievance(true)} variant="outline" className="border-orange-300 text-orange-700 hover:bg-orange-50">

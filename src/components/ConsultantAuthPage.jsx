@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { apiClient } from './api'; // Import the API client
 
 export function ConsultantAuthPage({ onBack, onLogin }) {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -16,45 +17,93 @@ export function ConsultantAuthPage({ onBack, onLogin }) {
     consultantId: '',
     specialization: ''
   });
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const [error, setError] = useState(''); // Add error state
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (error) setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
     
-    if (isLoginMode) {
-      // Handle login
-      onLogin({
-        name: formData.name || 'Dr. Sarah Wilson',
-        email: formData.email,
-        consultantId: formData.consultantId || 'CNS001',
-        specialization: formData.specialization || 'Ayurvedic Consultation'
-      });
-    } else {
-      // Handle registration
-      if (formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match');
-        return;
+    try {
+      if (isLoginMode) {
+        // Handle login with real API call
+        const loginData = {
+          email: formData.email,
+          password: formData.password
+        };
+        
+        const response = await apiClient.post('/api/auth/login', loginData);
+        
+        // Handle successful login
+        const userProfile = {
+          id: response.id || response.userId,
+          email: response.email,
+          name: response.name || response.fullName || 'Dr. ' + (response.email?.split('@')[0] || 'Consultant'),
+          firstName: response.firstName,
+          lastName: response.lastName,
+          consultantId: response.consultantId || response.id,
+          specialization: response.specialization || 'Ayurvedic Consultation'
+        };
+        
+        // Call the onLogin callback with role and user profile
+        onLogin('consultant', userProfile);
+      } else {
+        // Handle registration with real API call
+        if (formData.password !== formData.confirmPassword) {
+          throw new Error('Passwords do not match');
+        }
+        
+        const registerData = {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          specialization: formData.specialization
+        };
+        
+        const response = await apiClient.post('/api/auth/register', registerData);
+        
+        // Handle successful registration
+        const userProfile = {
+          id: response.id || response.userId,
+          email: response.email,
+          name: response.name || response.fullName || 'Dr. ' + (response.email?.split('@')[0] || 'Consultant'),
+          firstName: response.firstName,
+          lastName: response.lastName,
+          consultantId: response.consultantId || response.id,
+          specialization: response.specialization || formData.specialization
+        };
+        
+        // Call the onLogin callback with role and user profile
+        onLogin('consultant', userProfile);
       }
-      onLogin({
-        name: formData.name,
-        email: formData.email,
-        consultantId: 'CNS' + Math.floor(Math.random() * 1000),
-        specialization: formData.specialization
-      });
+    } catch (err) {
+      console.error('Authentication error:', err);
+      setError(err.message || 'Authentication failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleSignIn = () => {
-    onLogin({
+    // For now, we'll keep the mock data for Google sign-in
+    // In a real implementation, this would trigger Google OAuth flow
+    const userProfile = {
       name: 'Dr. Sarah Wilson',
       email: 'sarah.wilson@ayursutra.com',
       consultantId: 'CNS001',
       specialization: 'Ayurvedic Consultation'
-    });
+    };
+    
+    // Call the onLogin callback with role and user profile
+    onLogin('consultant', userProfile);
   };
 
   const handleForgotPassword = () => {
@@ -84,6 +133,13 @@ export function ConsultantAuthPage({ onBack, onLogin }) {
           </CardHeader>
 
           <CardContent>
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-md p-3 text-red-700 text-sm mb-4">
+                {error}
+              </div>
+            )}
+            
             <Tabs value={isLoginMode ? 'login' : 'register'} onValueChange={(value) => setIsLoginMode(value === 'login')}>
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger value="login">Sign In</TabsTrigger>
@@ -144,8 +200,19 @@ export function ConsultantAuthPage({ onBack, onLogin }) {
                   <Button 
                     type="submit" 
                     className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    disabled={isLoading}
                   >
-                    Sign In as Consultant
+                    {isLoading ? (
+                      <span className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Signing In...
+                      </span>
+                    ) : (
+                      'Sign In as Consultant'
+                    )}
                   </Button>
                 </form>
               </TabsContent>
@@ -236,8 +303,19 @@ export function ConsultantAuthPage({ onBack, onLogin }) {
                   <Button 
                     type="submit" 
                     className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    disabled={isLoading}
                   >
-                    Register as Consultant
+                    {isLoading ? (
+                      <span className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Registering...
+                      </span>
+                    ) : (
+                      'Register as Consultant'
+                    )}
                   </Button>
                 </form>
               </TabsContent>

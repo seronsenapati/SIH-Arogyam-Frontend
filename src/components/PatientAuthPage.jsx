@@ -52,8 +52,13 @@ export function PatientAuthPage({ onBack, onLogin }) {
           const userData = {
             id: response.data.user.id,
             email: response.data.user.email,
+            name: response.data.user.name || response.data.user.fullName,
+            firstName: response.data.user.firstName,
+            lastName: response.data.user.lastName,
             role: response.data.user.role,
-            token: response.data.accessToken
+            token: response.data.accessToken,
+            age: response.data.user.age,
+            profile: response.data.user.profile
           };
           
           // Call the onLogin callback with user data
@@ -106,8 +111,13 @@ export function PatientAuthPage({ onBack, onLogin }) {
             const userData = {
               id: loginResponse.data.user.id,
               email: loginResponse.data.user.email,
+              name: loginResponse.data.user.name || loginResponse.data.user.fullName || formData.fullName,
+              firstName: loginResponse.data.user.firstName,
+              lastName: loginResponse.data.user.lastName,
               role: loginResponse.data.user.role,
-              token: loginResponse.data.accessToken
+              token: loginResponse.data.accessToken,
+              age: loginResponse.data.user.age || parseInt(formData.age) || 0,
+              profile: loginResponse.data.user.profile
             };
             
             // Call the onLogin callback with user data
